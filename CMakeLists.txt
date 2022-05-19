@@ -3,10 +3,11 @@ cmake_minimum_required ( VERSION 3.0...3.20 FATAL_ERROR )
 project ( CubeSim VERSION 1.0 LANGUAGES C )
 
 
-set ( EXECUTABLE_NAME cubesim )
+set ( EXECUTABLE_NAME cubesim_web )
+set ( CMAKE_EXECUTABLE_SUFFIX .js )
 
 # set source and header files
-set ( SRC src/main.c )
+set ( SRC src/main.c src/cubesim_web.c )
 set ( HEADERS src/cubesim.h src/cube.h )
 
 
@@ -15,7 +16,8 @@ add_executable ( ${EXECUTABLE_NAME} ${HEADERS} ${SRC} )
 # specify output directory
 set_target_properties( ${EXECUTABLE_NAME}
     PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin" )
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin"
+    LINK_FLAGS "-s USE_GLFW=3 -s MAX_WEBGL_VERSION=2" )
 
 
 # cglm options
