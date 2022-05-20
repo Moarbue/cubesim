@@ -6,8 +6,8 @@ project ( CubeSim VERSION 1.0 LANGUAGES C )
 set ( EXECUTABLE_NAME cubesim )
 
 # set source and header files
-set ( SRC src/main.c )
-set ( HEADERS src/cubesim.h src/cube.h )
+set ( SRC src/main.c src/cube.c src/shader.c )
+set ( HEADERS include/cubesim.h include/cube.h include/shader.h )
 
 
 # add the executable
