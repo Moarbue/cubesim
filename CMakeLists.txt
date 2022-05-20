@@ -21,6 +21,9 @@ set_target_properties( ${EXECUTABLE_NAME}
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin" )
 
 
+# find OpenGL libraries
+find_package ( OpenGL REQUIRED )
+
 # cglm options
 option(CGLM_SHARED "Shared build" OFF)
 option(CGLM_STATIC "Static build" ON)
@@ -43,6 +46,7 @@ add_subdirectory ( deps/glfw        EXCLUDE_FROM_ALL )
 glad_add_library ( glad STATIC LOCATION ${CMAKE_BINARY_DIR}/deps/glad LANGUAGE "c" API "gl:core=4.0" )
 
 # Link needed libraries
+target_link_libraries ( ${EXECUTABLE_NAME} PRIVATE ${OPENGL_LIBRARIES} )
 target_link_libraries ( ${EXECUTABLE_NAME} PRIVATE cglm_headers )
 target_link_libraries ( ${EXECUTABLE_NAME} PRIVATE glad )
 target_link_libraries ( ${EXECUTABLE_NAME} PRIVATE glfw )
