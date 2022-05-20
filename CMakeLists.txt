@@ -7,8 +7,8 @@ set ( EXECUTABLE_NAME cubesim_web )
 set ( CMAKE_EXECUTABLE_SUFFIX .js )
 
 # set source and header files
-set ( SRC src/main.c src/cubesim_web.c )
-set ( HEADERS src/cubesim.h src/cube.h )
+set ( SRC src/main.c src/cube.c src/shader.c src/cubesim_web.c )
+set ( HEADERS include/cubesim.h include/cube.h include/shader.h )
 
 
 # add the executable
