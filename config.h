@@ -1,6 +1,8 @@
 #ifndef CUBE_SIM_CONFIG_H
 #define CUBE_SIM_CONFIG_H
 
+#include "GLFW/glfw3.h"
+
 #define CUBE_LENGTH 3
 
 #define ANIMATION_LENGTH .2f
@@ -9,6 +11,20 @@
 #define SCR_HEIGHT  700
 
 #define MAX_FPS     90
+
+#define MOUSE_SENSITIVITY   .1f
+
+#define ROTATION_KEYS ((unsigned short[]){GLFW_KEY_U,   \
+                                          GLFW_KEY_L,   \
+                                          GLFW_KEY_F,   \
+                                          GLFW_KEY_D,   \
+                                          GLFW_KEY_R,   \
+                                          GLFW_KEY_B})  \
+
+#define DOUBLE_ROTATION_KEY  GLFW_KEY_SPACE
+#define COUNTER_ROTATION_KEY GLFW_KEY_LEFT_CONTROL
+
+#define KEYS_COUNT (sizeof(ROTATION_KEYS) / sizeof(unsigned short))
 
 #define BACKGROUND_COLOR ((vec3){1.f, 1.f, 1.f})
 
