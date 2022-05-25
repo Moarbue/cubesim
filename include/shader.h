@@ -12,8 +12,7 @@ extern "C" {
 // (*shader) - [out] - the pointer to the shader that is created
 // (*vertex_path) - [in] - the path to the vertex shader
 // (*fragment_path) - [in] - the path to the fragment shader
-// (*geometry_path) - [in] - the path to the geometry shader, optional, pass NULL if not needed
-int shader_new(unsigned int *shader, const char *vertex_path, const char *fragment_path, const char *geometry_path);
+int shader_new(unsigned int *shader, const char *vertex_path, const char *fragment_path);
 
 #ifdef __cplusplus
 }

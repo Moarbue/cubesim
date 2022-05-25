@@ -88,7 +88,7 @@ int read_file(FILE *in, char **dataptr, size_t *sizeptr)
 }
 
 
-int shader_new(unsigned int *shader, const char *vertex_path, const char *fragment_path, const char *geometry_path) {
+int shader_new(unsigned int *shader, const char *vertex_path, const char *fragment_path) {
     // if shader pointer is NULL return
     if (!shader) {
         fprintf(stderr, "Shader Error: Output parameter \'shader\' can't be NULL\n");
@@ -153,36 +153,6 @@ int shader_new(unsigned int *shader, const char *vertex_path, const char *fragme
             return 1;
     }
 
-    // geometry shader code
-    char *geometry_code;
-    if (geometry_path != NULL) {
-        FILE *geometry_in = fopen(geometry_path, "rb");     
-        // Check if file stream was openend correctly
-        if (geometry_in == NULL) {
-            fprintf(stderr, "Shader Error: Failed to open geometry_path. Provided path was: %s\n", geometry_path);
-            return 1;
-        }
-        
-        ret = read_file(geometry_in, &geometry_code, &file_size);
-        fclose(geometry_in);
-        
-        // Check for reading errors
-        switch (ret) {
-            case READ_FILE_OK:
-                fprintf(stdout, "Read file content from %s\n", geometry_path);
-                break;
-            case READ_FILE_ERROR:
-                fprintf(stderr, "Shader Error: A read error occured while reading from geometry shader file %s\n", geometry_path);
-                return 1;
-            case READ_FILE_TOOMUCH:
-                fprintf(stderr, "Shader Error: Geometry shader file %s is too big\n", geometry_path);
-                return 1;
-            case READ_FILE_NOMEM:
-                fprintf(stderr, "Shader Error: Ran out of memory while reading from geometry shader file %s\n", geometry_path);
-                return 1;
-        }
-    }
-
     int success;
     // Create vertex shader
     unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -210,29 +180,10 @@ int shader_new(unsigned int *shader, const char *vertex_path, const char *fragme
     }
     fprintf(stdout, "Created fragment shader.\n");
 
-    // *** geometry shader creation
-    unsigned int geometry_shader;
-    if (geometry_path != NULL) {
-
-        // Create geometry shader
-        geometry_shader = glCreateShader(GL_GEOMETRY_SHADER);
-        glShaderSource(geometry_shader, 1, (const char * const *)&geometry_code, NULL);
-        glCompileShader(geometry_shader);
-
-        // Check for compile errors
-        glGetShaderiv(geometry_shader, GL_COMPILE_STATUS, &success);
-        if (!success) {
-            fprintf(stderr, "Shader Error: Failed to compile geometry shader. Provided file: %s\n", geometry_path);
-            return 1;
-        }
-        fprintf(stdout, "Created geometry shader.\n");
-    }
-
     // *** shader program creation
     unsigned int program = glCreateProgram();
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
-    if (geometry_path != NULL) glAttachShader(program, geometry_shader);
     glLinkProgram(program);
 
     // Check for linking errors
@@ -245,7 +196,6 @@ int shader_new(unsigned int *shader, const char *vertex_path, const char *fragme
 
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
-    if (geometry_path != NULL) glDeleteShader(geometry_shader);
 
     *shader = program;
 
