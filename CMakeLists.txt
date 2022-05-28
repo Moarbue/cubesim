@@ -10,7 +10,7 @@ endif ()
 
 # set source and header files
 set ( SRC src/main.c src/cube.c src/shader.c src/cubesim_desktop.c )
-set ( HEADERS include/cubesim.h include/cube.h include/shader.h )
+set ( HEADERS include/cubesim.h include/cube.h include/shader.h include/camera.h )
 
 
 # add the executable
