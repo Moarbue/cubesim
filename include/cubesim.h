@@ -3,6 +3,7 @@
 
 #define GLFW_INCLUDE_NONE
 #include "GLES3/gl3.h"
+#include <emscripten/emscripten.h>
 #include "GLFW/glfw3.h"
 #include "cglm/cglm.h"
 #include "shader.h"
