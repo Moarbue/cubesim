@@ -107,6 +107,7 @@ function btnOnClick(e, btn) {
     let _move = btn.innerText;
     if (e.button == 1) _move += "2";
     if (e.button == 2) _move += "\'";
+    websocket.send(_move);
     setMoveJS(parseInt(btn.id[1]) + 6 * e.button);
 }
 
@@ -119,6 +120,7 @@ textBox.addEventListener("keyup", function (e) {
         let str = textBox.value;
         str = str.toUpperCase();
         str = str.replace(/\s/g, '');
+        websocket.send(str);
         setAlgorithmJS(str);
         textBox.value = "";
     }
@@ -199,6 +201,7 @@ document.addEventListener("keydown", function(e) {
         if (move >= 0) {
             setMoveJS(move);
             _movestr += e.ctrlKey ? "\'" : e.shiftKey ? "2" : "";
+            websocket.send(_movestr);
         }
     }
 });
@@ -206,12 +209,14 @@ document.addEventListener("keydown", function(e) {
 // Scrambles the cube based on min2phase solver
 function scramble() {
     let scrambledcube = search.solution(min2phase.randomCube(), 21).toUpperCase().replace(/\s/g, '');
+    websocket.send(scrambledcube);
     setAlgorithmJS(scrambledcube);
 }
 
 // Solves the cube based on min2phase solver
 function solve() {
     let sol = search.solution(getFacesJS()[0], 21).toUpperCase().replace(/\s/g, '');
+    websocket.send(sol);
     setAlgorithmJS(sol);
 }
 
@@ -262,4 +267,46 @@ function onScroll(e) {
     if (fov >= 90.0)
         fov = 90.0;
     fovflag = true;
+}
+////////////////////////////////////////    WebSocket   //////////////////////////////////////
+
+var gateway = `ws://${window.location.hostname}/ws`;
+var websocket;
+
+function initWebSocket() {
+    console.log("opening websocket...");
+    websocket = new WebSocket(gateway);
+    websocket.onopen = onOpen;
+    websocket.onclose = onClose;
+    websocket.onmessage = onMessage;
+}
+function onOpen(event) {
+    console.log('connecting to server...');
+    console.log('connection open');
+    websocket.send('Colors');
+}
+
+function onClose(event) {
+    console.log('connection interrupted.');
+    setTimeout(initWebSocket, 2000);
+}
+function onMessage(event) {
+    if (event.data == "M")
+        scramble();
+    else if (event.data[0] == 'h') {
+        let curfaces = event.data.replace("hC", "");
+        setFacesJS(curfaces);
+        faceflag = true;
+    } else if (event.data[0] == 'C') {
+        let curfaces = event.data.replace("C", "");
+        setFacesJS(curfaces);
+    } else {
+        setAlgorithmJS(event.data);
+    }
+}
+
+window.addEventListener('load', onLoad);
+
+function onLoad(event) {
+    initWebSocket();
 }
