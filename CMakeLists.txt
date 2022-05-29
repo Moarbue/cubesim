@@ -11,6 +11,14 @@ set ( SRC src/main.c src/cube.c src/shader.c src/cubesim_web.c )
 set ( HEADERS include/cubesim.h include/cube.h include/shader.h )
 
 
+# Copy shaders to build folder
+file ( COPY ${CMAKE_SOURCE_DIR}/shaders/default.vert 
+DESTINATION ${CMAKE_BINARY_DIR}/shaders )
+
+file ( COPY ${CMAKE_SOURCE_DIR}/shaders/default.frag 
+DESTINATION ${CMAKE_BINARY_DIR}/shaders )
+
+
 # add the executable
 add_executable ( ${EXECUTABLE_NAME} ${HEADERS} ${SRC} )
 # specify output directory
@@ -24,7 +32,7 @@ set_target_properties( ${EXECUTABLE_NAME}
 option(CGLM_SHARED "Shared build" OFF)
 option(CGLM_STATIC "Static build" ON)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/deps/cglm)
+add_subdirectory(${CMAKE_SOURCE_DIR}/deps/cglm EXCLUDE_FROM_ALL )
 target_link_libraries ( ${EXECUTABLE_NAME} cglm )
 
 include_directories ( ${CMAKE_SOURCE_DIR}/deps/cglm/include )
