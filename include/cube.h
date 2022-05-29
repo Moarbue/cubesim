@@ -25,7 +25,7 @@
 // Colors, face colors can be modified in ../config.h
 #define BLACK ((vec3){0.0f , 0.0f , 0.0f})
 
-#define COLORS ((float*[]){UP, LEFT, FRONT, DOWN, RIGHT})
+#define COLORS ((float*[]){UP, LEFT, FRONT, DOWN, RIGHT, BACK})
 
 // side length of a cubie
 #define CUBIE_SIZE (.3f)
