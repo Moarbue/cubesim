@@ -10,6 +10,8 @@
 
 #define MAX_FPS     90
 
+#define MOUSE_SENSITIVITY 0.1f
+
 #define BACKGROUND_COLOR ((vec3){1.f, 1.f, 1.f})
 
 #define UP    ((vec3){1.0f , 1.0f , 0.0f})
